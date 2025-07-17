@@ -8,6 +8,7 @@ public class ExpenseTrackerServerJavaSpringbootQzApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExpenseTrackerServerJavaSpringbootQzApplication.class, args);
+
 	}
 
 }
