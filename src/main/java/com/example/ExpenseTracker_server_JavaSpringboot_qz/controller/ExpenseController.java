@@ -5,6 +5,7 @@ import com.example.ExpenseTracker_server_JavaSpringboot_qz.service.ExpenseServic
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ExpenseController {
     private ExpenseService expenseService;
 
     // Build Add Expense REST API
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ExpenseDto> addExpense(@RequestBody ExpenseDto expenseDto){
 
@@ -27,6 +29,7 @@ public class ExpenseController {
     }
 
     // Build Get Expense REST API
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("{id}")
     public ResponseEntity<ExpenseDto> getExpense(@PathVariable("id") Long expenseId){
         ExpenseDto expense = expenseService.getExpense(expenseId);
@@ -34,6 +37,7 @@ public class ExpenseController {
     }
 
     // Build Get All Expenses REST API
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping
     public ResponseEntity<List<ExpenseDto>> getAllExpenses(){
         List<ExpenseDto> expenses = expenseService.getAllExpenses();
@@ -42,6 +46,7 @@ public class ExpenseController {
     }
 
     // Build Edit Expense REST API
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{id}")
     public ResponseEntity<ExpenseDto> editExpense(@RequestBody ExpenseDto expenseDto,
                                                   @PathVariable("id") Long expenseId){
@@ -50,6 +55,7 @@ public class ExpenseController {
     }
 
     // Build Delete Expense REST API
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteExpense(@PathVariable("id") Long expenseId){
         expenseService.deleteExpense(expenseId);
