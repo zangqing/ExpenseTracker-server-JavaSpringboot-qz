@@ -1,5 +1,6 @@
 package com.example.ExpenseTracker_server_JavaSpringboot_qz.controller;
 
+import com.example.ExpenseTracker_server_JavaSpringboot_qz.dto.JwtAuthResponse;
 import com.example.ExpenseTracker_server_JavaSpringboot_qz.dto.LoginDto;
 import com.example.ExpenseTracker_server_JavaSpringboot_qz.dto.RegisterDto;
 import com.example.ExpenseTracker_server_JavaSpringboot_qz.service.AuthService;
@@ -25,9 +26,13 @@ public class AuthController {
 
     // Build Login REST API
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
-        String response = authService.login(loginDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto){
+        String token = authService.login(loginDto);
+
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+
+        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
 
 }
